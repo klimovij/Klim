@@ -349,10 +349,15 @@ export default function NewsFeed({ token, modal = false }) {
   // Helper to extract avatar url from different payload shapes
   // Backend origin resolver for static files
   const getApiOrigin = () => {
-    // Allow global override or env var; fallback to localhost:5000
+    // Allow global override or env var
     const g = (typeof window !== 'undefined' && (window.__API_ORIGIN__ || window.API_ORIGIN)) || '';
     const env = (typeof process !== 'undefined' && process.env && (process.env.REACT_APP_API_ORIGIN || process.env.VITE_API_ORIGIN)) || '';
-    return g || env || 'http://localhost:5000';
+    if (g || env) return g || env;
+    // Use current origin if available, fallback to localhost:5000 for dev
+    if (typeof window !== 'undefined' && window.location) {
+      return window.location.origin;
+    }
+    return 'http://localhost:5000';
   };
 
   const getAvatarUrl = (src) => {
@@ -475,7 +480,7 @@ export default function NewsFeed({ token, modal = false }) {
 
   // Effect: Setup socket listener (only once)
   useEffect(() => {
-    const socket = io('http://localhost:5000');
+    const socket = io(getApiOrigin());
     socket.on('new_congratulation', (congrat) => {
       setCongratulations(prev => [congrat, ...prev]);
     });

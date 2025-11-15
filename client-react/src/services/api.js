@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Определяем базовый URL API из переменной окружения или используем текущий хост
-const getApiBaseURL = () => {
+export const getApiBaseURL = () => {
   // В production используем переменную окружения или текущий хост
   if (process.env.REACT_APP_API_URL) {
     return process.env.REACT_APP_API_URL;

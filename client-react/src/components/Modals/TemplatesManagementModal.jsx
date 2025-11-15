@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { FiX, FiPlus, FiEdit2, FiTrash2, FiAlertTriangle, FiInfo, FiZap } from 'react-icons/fi';
 
+// Хелпер для получения базового URL API
+const getApiBase = () => typeof window !== 'undefined' && window.location ? window.location.origin : 'http://localhost:5000';
+
 const TemplatesManagementModal = ({ isOpen, onClose }) => {
   const { state } = useApp();
   const [templates, setTemplates] = useState([]);
@@ -54,7 +57,8 @@ const TemplatesManagementModal = ({ isOpen, onClose }) => {
       const token = localStorage.getItem('token');
       const endpoint = state.user?.role === 'admin' ? '/api/templates' : '/api/templates/for-me';
       
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const apiBase = getApiBase();
+      const response = await fetch(`${apiBase}${endpoint}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -82,8 +86,8 @@ const TemplatesManagementModal = ({ isOpen, onClose }) => {
     try {
       const token = localStorage.getItem('token');
       const url = editingTemplate 
-        ? `http://localhost:5000/api/templates/${editingTemplate.id}`
-        : 'http://localhost:5000/api/templates';
+        ? `${getApiBase()}/api/templates/${editingTemplate.id}`
+        : '${getApiBase()}/api/templates';
       
       const method = editingTemplate ? 'PUT' : 'POST';
       
@@ -128,7 +132,7 @@ const TemplatesManagementModal = ({ isOpen, onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:5000/api/templates/${templateId}`, {
+      const response = await fetch(`${getApiBase()}/api/templates/${templateId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });
