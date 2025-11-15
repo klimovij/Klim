@@ -422,6 +422,13 @@ export default function UserSelectionModal() {
   
   // Регистрация обработчика 'all_users' и мгновенный запрос при открытии модалки
   useEffect(() => {
+    // Обработчик ошибок (определяем здесь для доступа в cleanup)
+    const handleError = (error) => {
+      console.error('❌ Socket error:', error);
+      setError('Ошибка получения пользователей');
+      setLoading(false);
+    };
+    
     const handleAllUsers = (allUsers) => {
       console.log('📋 Получен список пользователей:', allUsers);
       if (!Array.isArray(allUsers)) {
@@ -453,13 +460,6 @@ export default function UserSelectionModal() {
     
     if (window.socket) {
       window.socket.on('all_users', handleAllUsers);
-      
-      // Обработчик ошибок
-      const handleError = (error) => {
-        console.error('❌ Socket error:', error);
-        setError('Ошибка получения пользователей');
-        setLoading(false);
-      };
       window.socket.on('error', handleError);
       
       // Если модалка открыта, запрашиваем список пользователей
