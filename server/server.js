@@ -797,6 +797,11 @@ app.get('/api/app-usage/report', authenticateToken, async (req, res) => {
 // --- HELPERS: PowerShell runner ---
 function runPowershell(command) {
   return new Promise((resolve, reject) => {
+    // Проверяем, что мы на Windows системе
+    if (process.platform !== 'win32') {
+      return reject(new Error('PowerShell commands are only available on Windows systems'));
+    }
+
     const prelude = `
       try { $OutputEncoding = [Console]::OutputEncoding = [Text.UTF8Encoding]::new($false) } catch {}
       try { chcp 65001 | Out-Null } catch {}

@@ -2213,6 +2213,22 @@ class Database {
       this.db.run(`ALTER TABLE employees ADD COLUMN avatar_url TEXT`, () => {});
       // Добавить поле department для старых баз
       this.db.run(`ALTER TABLE employees ADD COLUMN department TEXT`, () => {});
+      // Добавить поля для даты рождения (миграция)
+      this.db.run(`ALTER TABLE employees ADD COLUMN birth_day INTEGER`, (err) => {
+        if (err && !err.message.includes('duplicate column')) {
+          console.error('Error adding birth_day column:', err);
+        }
+      });
+      this.db.run(`ALTER TABLE employees ADD COLUMN birth_month INTEGER`, (err) => {
+        if (err && !err.message.includes('duplicate column')) {
+          console.error('Error adding birth_month column:', err);
+        }
+      });
+      this.db.run(`ALTER TABLE employees ADD COLUMN birth_year INTEGER`, (err) => {
+        if (err && !err.message.includes('duplicate column')) {
+          console.error('Error adding birth_year column:', err);
+        }
+      });
 
       // Таблица быстрых шаблонов сообщений по департаментам
       this.db.run(`

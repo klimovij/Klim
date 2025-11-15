@@ -88,6 +88,13 @@ async function retryDatabaseOperation(operation, maxRetries = 5, delay = 100) {
 // Функция автоматического импорта
 async function autoImportWindowsLogs(daysBack = 1, serverBaseUrl = null) {
   try {
+    // Проверяем, что мы на Windows системе
+    const isWindows = process.platform === 'win32';
+    if (!isWindows) {
+      console.log('⚠️ Автоимпорт Windows логов доступен только на Windows системах. Пропускаем...');
+      return { success: false, error: 'Auto-import is only available on Windows systems' };
+    }
+
     console.log(`🔄 Автоматический импорт за последние ${daysBack} дней...`);
     
     const targetDate = new Date();
@@ -263,6 +270,15 @@ cron.schedule('30 0 * * *', () => {
 // НОВЫЙ МАРШРУТ: Прямой импорт из журнала Windows
 router.post('/import-from-windows-log', async (req, res) => {
   try {
+    // Проверяем, что мы на Windows системе
+    const isWindows = process.platform === 'win32';
+    if (!isWindows) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Windows log import is only available on Windows systems' 
+      });
+    }
+
     const { 
       startDate = null, 
       endDate = null, 
