@@ -4,6 +4,12 @@ import AdminDangerZone from './Common/AdminDangerZone';
 import { FaUserCircle, FaFilter, FaSort, FaCheckCircle, FaHourglassHalf } from 'react-icons/fa';
 import { useApp } from '../context/AppContext';
 import styled from 'styled-components';
+// Импорт иконок файлов
+import excelIcon from '../assets/icons/excel.png';
+import pdfIcon from '../assets/icons/pdf.png';
+import wordIcon from '../assets/icons/word.png';
+import rarIcon from '../assets/icons/rar.png';
+import photoIcon from '../assets/icons/photo.png';
 
 // Хелпер для получения базового URL API
 const getApiBaseURL = () => {
@@ -12,13 +18,6 @@ const getApiBaseURL = () => {
   }
   return 'http://localhost:5000';
 };
-
-// Импорт иконок файлов
-import excelIcon from '../assets/icons/excel.png';
-import pdfIcon from '../assets/icons/pdf.png';
-import wordIcon from '../assets/icons/word.png';
-import rarIcon from '../assets/icons/rar.png';
-import photoIcon from '../assets/icons/photo.png';
 
 // Styled components объявлены вне функции
 const Wrapper = styled.div`
